@@ -29,8 +29,8 @@ resources:
 
 steps:
 
-# - checkout: self
-#   path: 'tf-eks'
+- checkout: self
+  path: 'tf'
 
 # - checkout: tf-aws-tags
 #   path: 'tf-aws-tags'
@@ -71,7 +71,7 @@ steps:
 
       ls
       pwd
-      ls $(Pipeline.Workspace)
+      ls $(Pipeline.Workspace)/tf
 
 
 
@@ -85,7 +85,7 @@ steps:
   inputs:
     provider: 'aws'
     command: 'init'
-    workingDirectory: '$(Pipeline.Workspace)'
+    workingDirectory: '$(Pipeline.Workspace)/tf'
     backendServiceAWS: 'aws-for-terraform'
     backendAWSBucketName: 'zt-tf-state-store'
     backendAWSKey: 'aws-vpn/pb.tfstate'
@@ -95,7 +95,7 @@ steps:
   inputs:
     provider: 'aws'
     command: 'plan'
-    workingDirectory: '$(Pipeline.Workspace)'
+    workingDirectory: '$(Pipeline.Workspace)/tf'
     environmentServiceNameAWS: 'aws-for-terraform'
 
 - ${{ if eq(parameters.destroy, false) }}:
@@ -104,7 +104,7 @@ steps:
     inputs:
       provider: 'aws'
       command: 'apply'
-      workingDirectory: '$(Pipeline.Workspace)'
+      workingDirectory: '$(Pipeline.Workspace)/tf'
       environmentServiceNameAWS: 'aws-for-terraform'
 
 - ${{ if eq(parameters.destroy, true) }}:
@@ -113,5 +113,5 @@ steps:
     inputs:
       provider: 'aws'
       command: 'destroy'
-      workingDirectory: '$(Pipeline.Workspace)'
+      workingDirectory: '$(Pipeline.Workspace)/tf'
       environmentServiceNameAWS: 'aws-for-terraform'
