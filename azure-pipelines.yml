@@ -69,6 +69,9 @@ steps:
       which aws
       aws --version
 
+      ls
+      
+
 - task: TerraformInstaller@0
   displayName: install terraform v1.2.8
   inputs:
