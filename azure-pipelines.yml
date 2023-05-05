@@ -41,21 +41,21 @@ steps:
 #     helmVersion: '2.14.1'
 #     installKubectl: false
 
-- task: Bash@3
-  displayName: helm repo - adding
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Write your commands here
+# - task: Bash@3
+#   displayName: helm repo - adding
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       # Write your commands here
 
-      helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
-      helm repo add eks https://aws.github.io/eks-charts
-      helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver
-      helm repo add datadog https://helm.datadoghq.com
-      helm repo add apache-airflow https://airflow.apache.org
-      helm repo add bitnami https://charts.bitnami.com/bitnami
-      helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
-      helm repo add hashicorp https://helm.releases.hashicorp.com
+#       helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
+#       helm repo add eks https://aws.github.io/eks-charts
+#       helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver
+#       helm repo add datadog https://helm.datadoghq.com
+#       helm repo add apache-airflow https://airflow.apache.org
+#       helm repo add bitnami https://charts.bitnami.com/bitnami
+#       helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
+#       helm repo add hashicorp https://helm.releases.hashicorp.com
 
 - task: Bash@3
   displayName: install aws cli
