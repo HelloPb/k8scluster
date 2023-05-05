@@ -70,7 +70,9 @@ steps:
       aws --version
 
       ls
-      
+      ls $(Pipeline.Workspace)
+
+
 
 - task: TerraformInstaller@0
   displayName: install terraform v1.2.8
@@ -85,7 +87,7 @@ steps:
     workingDirectory: '$(Pipeline.Workspace)'
     backendServiceAWS: 'aws-for-terraform'
     backendAWSBucketName: 'zt-tf-state-store'
-    backendAWSKey: 'aws-vpn/dev-eks-cluster.tfstate'
+    backendAWSKey: 'aws-vpn/pb.tfstate'
 
 - task: TerraformTaskV4@4
   displayName: terraform plan - eks cluster
