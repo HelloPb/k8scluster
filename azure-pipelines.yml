@@ -29,17 +29,17 @@ resources:
 
 steps:
 
-- checkout: self
-  path: 'tf-eks'
+# - checkout: self
+#   path: 'tf-eks'
 
-- checkout: tf-aws-tags
-  path: 'tf-aws-tags'
+# - checkout: tf-aws-tags
+#   path: 'tf-aws-tags'
 
-- task: HelmInstaller@0
-  displayName: helm 2.14.1 - installing
-  inputs:
-    helmVersion: '2.14.1'
-    installKubectl: false
+# - task: HelmInstaller@0
+#   displayName: helm 2.14.1 - installing
+#   inputs:
+#     helmVersion: '2.14.1'
+#     installKubectl: false
 
 - task: Bash@3
   displayName: helm repo - adding
@@ -74,21 +74,38 @@ steps:
   inputs:
     terraformVersion: '1.2.8'
 
+- task: TerraformTaskV4@4
+  displayName: terraform init - eks cluster
+  inputs:
+    provider: 'aws'
+    command: 'init'
+    workingDirectory: '$(Pipeline.Workspace)'
+    backendServiceAWS: 'aws-for-terraform'
+    backendAWSBucketName: 'zt-tf-state-store'
+    backendAWSKey: 'aws-vpn/dev-eks-cluster.tfstate'
+
+- task: TerraformTaskV4@4
+  displayName: terraform plan - eks cluster
+  inputs:
+    provider: 'aws'
+    command: 'plan'
+    workingDirectory: '$(Pipeline.Workspace)'
+    environmentServiceNameAWS: 'aws-for-terraform'
+
 - ${{ if eq(parameters.destroy, false) }}:
-  - template: /yml/vpc.yml@tf-eks
-    parameters:
-      destroy: false
-  - template: /yml/cluster.yml@tf-eks
-    parameters:
-      destroy: false
+  - task: TerraformTaskV4@4
+    displayName: terraform apply - eks cluster
+    inputs:
+      provider: 'aws'
+      command: 'apply'
+      workingDirectory: '$(Pipeline.Workspace)'
+      environmentServiceNameAWS: 'aws-for-terraform'
 
 - ${{ if eq(parameters.destroy, true) }}:
-  - template: /yml/vpc.yml@tf-eks
-    parameters:
-      destroy: false
-  - template: /yml/cluster.yml@tf-eks
-    parameters:
-      destroy: true
-  - template: /yml/vpc.yml@tf-eks
-    parameters:
-      destroy: true
+  - task: TerraformTaskV4@4
+    displayName: terraform destroy - eks cluster
+    inputs:
+      provider: 'aws'
+      command: 'destroy'
+      workingDirectory: '$(Pipeline.Workspace)'
+      environmentServiceNameAWS: 'aws-for-terraform'
