@@ -80,7 +80,7 @@ steps:
     provider: 'aws'
     command: 'init'
     workingDirectory: '$(Pipeline.Workspace)/tf'
-    backendServiceAWS: 'aws-for-terraform'
+    backendServiceAWS: 'aws-for-terraform-2'
     backendAWSBucketName: 'zt-tf-state-store'
     backendAWSKey: 'aws-vpn/pb.tfstate'
 
@@ -90,7 +90,7 @@ steps:
     provider: 'aws'
     command: 'plan'
     workingDirectory: '$(Pipeline.Workspace)/tf'
-    environmentServiceNameAWS: 'aws-for-terraform'
+    environmentServiceNameAWS: 'aws-for-terraform-2'
 
 - ${{ if eq(parameters.destroy, false) }}:
   - task: TerraformTaskV4@4
@@ -99,7 +99,7 @@ steps:
       provider: 'aws'
       command: 'apply'
       workingDirectory: '$(Pipeline.Workspace)/tf'
-      environmentServiceNameAWS: 'aws-for-terraform'
+      environmentServiceNameAWS: 'aws-for-terraform-2'
 
 - ${{ if eq(parameters.destroy, true) }}:
   - task: TerraformTaskV4@4
@@ -108,4 +108,4 @@ steps:
       provider: 'aws'
       command: 'destroy'
       workingDirectory: '$(Pipeline.Workspace)/tf'
-      environmentServiceNameAWS: 'aws-for-terraform'
+      environmentServiceNameAWS: 'aws-for-terraform-2'
