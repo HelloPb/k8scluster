@@ -67,8 +67,8 @@ steps:
     script: |
       # Write your commands here
 
-      echo AWS_ACCESS_KEY_ID="AKIAUDI43WQVZPVX4YGX"
-      echo AWS_SECRET_ACCESS_KEY="RU9f82Nt/UiOkBzPzdjx2f28M14muz64EGGy+QD4"
+      echo $AWS_ACCESS_KEY_ID
+      echo $AWS_SECRET_ACCESS_KEY
 
 # - task: Bash@3
 #   displayName: install aws cli
