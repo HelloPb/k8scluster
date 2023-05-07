@@ -57,55 +57,68 @@ steps:
       helm repo add aws-ebs-csi-driver https://kubernetes-sigs.github.io/aws-ebs-csi-driver
       helm repo add hashicorp https://helm.releases.hashicorp.com
 
+      export AWS_ACCESS_KEY_ID="AKIAUDI43WQVZPVX4YGX"
+      export AWS_SECRET_ACCESS_KEY="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"
+
 - task: Bash@3
-  displayName: install aws cli
+  displayName: helm repo - adding
   inputs:
     targetType: 'inline'
     script: |
-      Write your commands here
-      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      unzip awscliv2.zip
-      sudo ./aws/install
-      which aws
-      aws --version
+      # Write your commands here
 
-- task: TerraformInstaller@0
-  displayName: install terraform v1.2.8
-  inputs:
-    terraformVersion: '1.2.8'
+      echo AWS_ACCESS_KEY_ID="AKIAUDI43WQVZPVX4YGX"
+      echo AWS_SECRET_ACCESS_KEY="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"
 
-- task: TerraformTaskV4@4
-  displayName: terraform init - eks cluster
-  inputs:
-    provider: 'aws'
-    command: 'init'
-    workingDirectory: '$(Pipeline.Workspace)/tf'
-    backendServiceAWS: 'aws-for-terraform-2'
-    backendAWSBucketName: 'zt-tf-state-store'
-    backendAWSKey: 'aws-vpn/pb.tfstate'
+# - task: Bash@3
+#   displayName: install aws cli
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       Write your commands here
+#       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+#       unzip awscliv2.zip
+#       sudo ./aws/install
+#       which aws
+#       aws --version
 
-- task: TerraformTaskV4@4
-  displayName: terraform plan - eks cluster
-  inputs:
-    provider: 'aws'
-    command: 'plan'
-    workingDirectory: '$(Pipeline.Workspace)/tf'
-    environmentServiceNameAWS: 'aws-for-terraform-2'
+# - task: TerraformInstaller@0
+#   displayName: install terraform v1.2.8
+#   inputs:
+#     terraformVersion: '1.2.8'
 
-- ${{ if eq(parameters.destroy, false) }}:
-  - task: TerraformTaskV4@4
-    displayName: terraform apply - eks cluster
-    inputs:
-      provider: 'aws'
-      command: 'apply'
-      workingDirectory: '$(Pipeline.Workspace)/tf'
-      environmentServiceNameAWS: 'aws-for-terraform-2'
+# - task: TerraformTaskV4@4
+#   displayName: terraform init - eks cluster
+#   inputs:
+#     provider: 'aws'
+#     command: 'init'
+#     workingDirectory: '$(Pipeline.Workspace)/tf'
+#     backendServiceAWS: 'aws-for-terraform-2'
+#     backendAWSBucketName: 'zt-tf-state-store'
+#     backendAWSKey: 'aws-vpn/pb.tfstate'
 
-- ${{ if eq(parameters.destroy, true) }}:
-  - task: TerraformTaskV4@4
-    displayName: terraform destroy - eks cluster
-    inputs:
-      provider: 'aws'
-      command: 'destroy'
-      workingDirectory: '$(Pipeline.Workspace)/tf'
-      environmentServiceNameAWS: 'aws-for-terraform-2'
+# - task: TerraformTaskV4@4
+#   displayName: terraform plan - eks cluster
+#   inputs:
+#     provider: 'aws'
+#     command: 'plan'
+#     workingDirectory: '$(Pipeline.Workspace)/tf'
+#     environmentServiceNameAWS: 'aws-for-terraform-2'
+
+# - ${{ if eq(parameters.destroy, false) }}:
+#   - task: TerraformTaskV4@4
+#     displayName: terraform apply - eks cluster
+#     inputs:
+#       provider: 'aws'
+#       command: 'apply'
+#       workingDirectory: '$(Pipeline.Workspace)/tf'
+#       environmentServiceNameAWS: 'aws-for-terraform-2'
+
+# - ${{ if eq(parameters.destroy, true) }}:
+#   - task: TerraformTaskV4@4
+#     displayName: terraform destroy - eks cluster
+#     inputs:
+#       provider: 'aws'
+#       command: 'destroy'
+#       workingDirectory: '$(Pipeline.Workspace)/tf'
+#       environmentServiceNameAWS: 'aws-for-terraform-2'
